@@ -4,3 +4,5 @@ export interface Product {
     id: string;
 }
 export interface ProductListProps {}
+
+export interface ProductFormProps {}
