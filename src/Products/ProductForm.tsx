@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { addProduct, Product } from './products.slice';
+import { addProductAsync, getErrorMessage, Product } from './products.slice';
 import { useAppDispatch } from '../store.hooks';
+import { useSelector } from 'react-redux';
 
 const ProductForm: React.FC = () => {
     const dispatch = useAppDispatch();
+
+    const errorMessage = useSelector(getErrorMessage);
 
     const [product, setProducts] = useState<Product>({
         id: '',
@@ -21,7 +24,7 @@ const ProductForm: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        dispatch(addProduct(product));
+        dispatch(addProductAsync(product));
     };
 
     const { title, price, id } = product || {};
@@ -29,10 +32,32 @@ const ProductForm: React.FC = () => {
     return (
         <div>
             <h2>Add Game to Store</h2>
+            {errorMessage && <span>error:{errorMessage}</span>}
             <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Game title" name="title" value={title} onChange={handleChange} />
-                <input type="number" placeholder="Price" name="price" value={price} onChange={handleChange} />
-                <input type="text" placeholder="id" name="id" value={id} onChange={handleChange} />
+                <input
+                    style={{ border: errorMessage ? '1px solid red' : '1px solid black' }}
+                    type="text"
+                    placeholder="Game title"
+                    name="title"
+                    value={title}
+                    onChange={handleChange}
+                />
+                <input
+                    style={{ border: errorMessage ? '1px solid red' : '1px solid black' }}
+                    type="number"
+                    placeholder="Price"
+                    name="price"
+                    value={price}
+                    onChange={handleChange}
+                />
+                <input
+                    style={{ border: errorMessage ? '1px solid red' : '1px solid black' }}
+                    type="text"
+                    placeholder="id"
+                    name="id"
+                    value={id}
+                    onChange={handleChange}
+                />
                 <button type="submit">Add Product</button>
             </form>
         </div>
